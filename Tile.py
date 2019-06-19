@@ -27,6 +27,12 @@ class Tile:
         else:
             self.visited = False
 
+        # has an enemy already visited?
+        if "visited" in kwargs:
+            self.evisited = kwargs["visited"]
+        else:
+            self.evisited = False
+
         # is the target holding anything special?
         if "holding" in kwargs:
             self.holding = kwargs["holding"]
@@ -46,12 +52,18 @@ class Tile:
                         2: None,
                         3: None}
 
+        self.teleported = False
+
         self.X = None
         self.Y = None
 
         self.image = None
+        self.phaseImage = None
+        self.phased = False
 
     def createImage(self, frame, BLOCKx, BLOCKy):
+
+        frame.delete(self.image)
 
         # if the start
         if self.start:
@@ -91,10 +103,88 @@ class Tile:
                                    fill="black")
             frame.pack()
 
-    def updateImage(self, frame):
-        frame.itemconfig(self.image, fill='blue')
+        # if the tile is holding
+        if self.holding == "phase":
+            self.phaseImage = frame.create_oval(self.X * BLOCKx + BLOCKx / 5, self.Y * BLOCKy + BLOCKy / 5,
+                                           (self.X + 1) * BLOCKx - BLOCKx / 5, (self.Y + 1) * BLOCKy - BLOCKy / 5,
+                                           fill="#66FF00")
+        elif self.holding == "money":
+            self.phaseImage = frame.create_rectangle(self.X * BLOCKx + BLOCKx / 8, self.Y * BLOCKy + BLOCKy / 3,
+                                                (self.X + 1) * BLOCKx - BLOCKx / 8, (self.Y + 1) * BLOCKy - BLOCKy / 3,
+                                                fill="green")
 
+    def resetTile(self, frame):
+        frame.itemconfig(self.image, fill="white")
 
+    def resize(self, frame, BLOCKx, BLOCKy):
+        # if target
+        if self.target:
+            self.image = frame.create_rectangle(self.X * BLOCKx, self.Y * BLOCKy, (self.X + 1) * BLOCKx,
+                                                (self.Y + 1) * BLOCKy,
+                                                fill="red")
+            frame.pack()
 
+        # if teleported
+        elif self.teleported:
+            self.image = frame.create_rectangle(self.X * BLOCKx, self.Y * BLOCKy, (self.X + 1) * BLOCKx,
+                                                (self.Y + 1) * BLOCKy,
+                                                fill="#944CDC")
+            frame.pack()
+        # if phased
+        elif self.phased:
+            self.image = frame.create_rectangle(self.X * BLOCKx, self.Y * BLOCKy, (self.X + 1) * BLOCKx,
+                                                (self.Y + 1) * BLOCKy,
+                                                fill="#00FF77")
 
+        # if visited
+        elif self.visited:
+            self.image = frame.create_rectangle(self.X * BLOCKx, self.Y * BLOCKy, (self.X + 1) * BLOCKx,
+                                                (self.Y + 1) * BLOCKy,
+                                                fill="blue")
+            frame.pack()
+        # if evisited
+        elif self.evisited:
+            self.image = frame.create_rectangle(self.X * BLOCKx, self.Y * BLOCKy, (self.X + 1) * BLOCKx,
+                                                (self.Y + 1) * BLOCKy,
+                                                fill="orange")
+            frame.pack()
 
+        # if normal
+        else:
+            self.image = frame.create_rectangle(self.X * BLOCKx, self.Y * BLOCKy, (self.X + 1) * BLOCKx,
+                                                (self.Y + 1) * BLOCKy,
+                                                fill="white")
+            frame.pack()
+
+        # tile borders
+        if self.borders[0]:
+            frame.create_rectangle(self.X * BLOCKx, self.Y * BLOCKy, (self.X + 1) * BLOCKx,
+                                   self.Y * BLOCKy + BLOCKy / 10,
+                                   fill="black")
+            frame.pack()
+        if self.borders[1]:
+            frame.create_rectangle(self.X * BLOCKx + BLOCKx * (9 / 10), self.Y * BLOCKy, (self.X + 1) * BLOCKx,
+                                   (self.Y + 1) * BLOCKy,
+                                   fill="black")
+            frame.pack()
+        if self.borders[2]:
+            frame.create_rectangle(self.X * BLOCKx, self.Y * BLOCKy + BLOCKy * (9 / 10), (self.X + 1) * BLOCKx,
+                                   (self.Y + 1) * BLOCKy,
+                                   fill="black")
+            frame.pack()
+        if self.borders[3]:
+            frame.create_rectangle(self.X * BLOCKx, self.Y * BLOCKy, self.X * BLOCKx + BLOCKx / 10,
+                                   (self.Y + 1) * BLOCKy,
+                                   fill="black")
+            frame.pack()
+
+        # if the tile is holding
+        if self.holding == "phase":
+            self.phaseImage = frame.create_oval(self.X * BLOCKx + BLOCKx / 5, self.Y * BLOCKy + BLOCKy / 5,
+                                                (self.X + 1) * BLOCKx - BLOCKx / 5, (self.Y + 1) * BLOCKy - BLOCKy / 5,
+                                                fill="#66FF00")
+
+        elif self.holding == "money":
+            self.phaseImage = frame.create_rectangle(self.X * BLOCKx + (BLOCKx / 8), self.Y * BLOCKy + BLOCKy / 3,
+                                                (self.X + 1) * BLOCKx - (BLOCKx / 8), (self.Y + 1) * BLOCKy - BLOCKy / 3,
+                                                fill="green")
