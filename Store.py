@@ -1,5 +1,4 @@
 import random as r
-import Popup as pu
 from tkinter import *
 
 
@@ -22,26 +21,26 @@ class Store:
         self.totalLabel = None
         self.totalVar = StringVar()
 
-        self.pbi = PhotoImage(file="PhaseButton.gif")
-        self.pbone = PhotoImage(file="phase1.gif")
-        self.pbthree = PhotoImage(file="phase3.gif")
-        self.pbfive = PhotoImage(file="phase5.gif")
+        self.pbi = PhotoImage(file="art/PhaseButton.gif")
+        self.pbone = PhotoImage(file="art/phase1.gif")
+        self.pbthree = PhotoImage(file="art/phase3.gif")
+        self.pbfive = PhotoImage(file="art/phase5.gif")
 
-        self.tbi = PhotoImage(file="telestore.gif")
-        self.tbone = PhotoImage(file="tele1.gif")
-        self.tbthree = PhotoImage(file="tele3.gif")
-        self.tbfive = PhotoImage(file="tele5.gif")
+        self.tbi = PhotoImage(file="art/telestore.gif")
+        self.tbone = PhotoImage(file="art/tele1.gif")
+        self.tbthree = PhotoImage(file="art/tele3.gif")
+        self.tbfive = PhotoImage(file="art/tele5.gif")
 
-        self.rbi = PhotoImage(file="reset.gif")
-        self.rbone = PhotoImage(file="reset1.gif")
-        self.rbthree = PhotoImage(file="reset3.gif")
-        self.rbfive = PhotoImage(file="reset5.gif")
+        self.rbi = PhotoImage(file="art/reset.gif")
+        self.rbone = PhotoImage(file="art/reset1.gif")
+        self.rbthree = PhotoImage(file="art/reset3.gif")
+        self.rbfive = PhotoImage(file="art/reset5.gif")
 
-        self.buyi = PhotoImage(file="buy.gif")
-        self.closei = PhotoImage(file="Close.gif")
+        self.buyi = PhotoImage(file="art/buy.gif")
+        self.closei = PhotoImage(file="art/Close.gif")
 
-        self.teletoggle = PhotoImage(file="teleport.gif")
-        self.resettoggle = PhotoImage(file="reset tails.gif")
+        self.teletoggle = PhotoImage(file="menus/maze_menu_art/teleport.gif")
+        self.resettoggle = PhotoImage(file="menus/maze_menu_art/reset tails.gif")
 
 
     def addLabel(self, item, number):
