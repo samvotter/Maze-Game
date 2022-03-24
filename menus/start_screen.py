@@ -33,7 +33,6 @@ class TutorialButton(MenuButton):
         self.startScreen = start_screen
 
     def behavior(self):
-        # self.parent.destroy()
         t = tutorial.Tutorial(self.parent)
         t.tutorialSeries()
         self.startScreen.rebuild()
@@ -117,6 +116,7 @@ class StartScreen:
         self.startCanvas.pack()
 
     def rebuild(self):
+        self.startCanvas.destroy()
         self.image = PhotoImage(file=r"menus\start_art\startscreen.gif")
         self.startCanvas = Canvas(self.parent, width=self.width, height=self.height)
         self.startCanvas.create_image(0, 0, image=self.image, anchor=NW)
