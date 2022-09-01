@@ -57,7 +57,7 @@ class Tile:
         self.phaseImage = None
         self.phased = False
 
-    def createImage(self, frame, BLOCKx, BLOCKy):
+    def create_image(self, frame, BLOCKx, BLOCKy):
 
         frame.delete(self.image)
 
@@ -109,7 +109,7 @@ class Tile:
                                                 (self.X + 1) * BLOCKx - BLOCKx / 8, (self.Y + 1) * BLOCKy - BLOCKy / 3,
                                                 fill="green")
 
-    def resetTile(self, frame):
+    def reset_tile(self, frame):
         frame.itemconfig(self.image, fill="white")
 
     def resize(self, frame, BLOCKx, BLOCKy):

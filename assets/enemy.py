@@ -48,7 +48,7 @@ class Enemy(player.Player):
             return False
 
 
-    def createImage(self, frame, BLOCKx, BLOCKy):
+    def create_image(self, frame, BLOCKx, BLOCKy):
         self.X = self.loc.X
         self.Y = self.loc.Y
         self.loc.evisited = True

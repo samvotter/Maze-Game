@@ -63,7 +63,7 @@ class MazeMenu:
         buttons.NoButton(giveupScreen, relx=.75, rely=.75)
 
     def storePU(self):
-        self.maze.store.createImage(self.maze.frame, self.width, self.height)
+        self.maze.store.create_image(self.maze.frame, self.width, self.height)
 
     def tele(self):
         if self.maze.player.teleport:
@@ -74,7 +74,7 @@ class MazeMenu:
                 self.tele_button.config(image=self.teleportImage)
             self.maze.player.loc.teleported = True
             self.maze.frame.itemconfig(self.maze.player.loc.image, fill="#944CDC")
-            self.maze.player.loc = self.maze.terrain.randomSpot(0, self.maze.terrain.rows, 0, self.maze.terrain.cols)
+            self.maze.player.loc = self.maze.terrain.random_spot(0, self.maze.terrain.rows, 0, self.maze.terrain.cols)
             self.maze.player.X = self.maze.player.loc.X
             self.maze.player.Y = self.maze.player.loc.Y
             self.maze.player.loc.visited = True

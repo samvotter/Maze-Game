@@ -12,7 +12,7 @@ BLOCKx = WIDTH/COLS
 BLOCKy = HEIGHT/ROWS
 
 exp = t.Terrain(ROWS, COLS, p.Player(), [])
-exp.randomPath()
+exp.random_path()
 
 window = Tk()
 
@@ -48,7 +48,8 @@ window.bind('<Down>', downKey)
 
 
 area = Canvas(window, width=WIDTH, height=HEIGHT)
-exp.createImage(area, WIDTH, HEIGHT)
+area.pack()
+exp.create_image(area, WIDTH, HEIGHT)
 
 window.mainloop()
 

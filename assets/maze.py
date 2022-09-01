@@ -1,7 +1,6 @@
 from tkinter import Canvas, BOTTOM
 
-from menus import maze_menu as mm
-import Store as s
+from menus import maze_menu as mm, store as s
 import time as t
 
 
@@ -27,11 +26,11 @@ class Maze:
         self.active = True
         if "path" in kwargs:
             if kwargs["path"] == "random":
-                self.terrain.randomPath()
-                self.terrain.randomizePickups()
-                self.terrain.placeMoney()
-                self.terrain.checkStartExit()
-                self.terrain.checkBarriers()
+                self.terrain.random_path()
+                self.terrain.randomize_pickups()
+                self.terrain.place_money()
+                self.terrain.check_start_exit()
+                self.terrain.check_barriers()
 
         self.menu = mm.MazeMenu(parent, self)
 
@@ -60,12 +59,12 @@ class Maze:
                 if self.player.loc.target:
                     self.level += 1
                     if self.level % 5 == 0:
-                        self.spawnEnemy()
-                    self.terrain.expandMap(4)
+                        self.spawn_enemy()
+                    self.terrain.expand_map(4)
                     self.placeTarget()
                     for enemy in self.terrain.enemies:
                         if enemy.dead:
-                            enemy.loc = self.terrain.randomSpot(0, self.terrain.rows, 0, self.terrain.cols)
+                            enemy.loc = self.terrain.random_spot(0, self.terrain.rows, 0, self.terrain.cols)
                             enemy.loc.evisited = True
                             enemy.dead = False
                             enemy.X = enemy.loc.X
@@ -73,11 +72,10 @@ class Maze:
                             enemy.updateTile(self.frame)
                             enemy.redraw(self.frame, self.BLOCKx, self.BLOCKy)
                     for i in range(self.level):
-                        self.terrain.placeMoney()
+                        self.terrain.place_money()
                     self.updateBlocks()
                     self.redraw()
                 self.parent.update()
-                t.sleep(.01)
         else:
             while self.active:
                 if self.player.loc.target:
@@ -90,13 +88,13 @@ class Maze:
         self.BLOCKx = self.width / self.terrain.cols
 
     def createImage(self):
-        self.terrain.createImage(self.frame, self.BLOCKx, self.BLOCKy)
+        self.terrain.create_image(self.frame, self.BLOCKx, self.BLOCKy)
 
     def redraw(self):
         self.terrain.redraw(self.frame, self.BLOCKx, self.BLOCKy)
 
     def placeTarget(self):
-        self.terrain.placeTarget(self.frame)
+        self.terrain.place_target(self.frame)
 
     def left(self):
         self.frame.move(self.player.image, -self.BLOCKx, 0)
@@ -110,16 +108,16 @@ class Maze:
     def down(self):
         self.frame.move(self.player.image, 0, self.BLOCKy)
 
-    def playerUpdate(self):
+    def player_update(self):
         self.player.updateTile(self.frame)
 
-    def enemyUpdate(self):
+    def enemy_update(self):
         for enemy in self.enemies:
             if not enemy.dead:
                 enemy.move(self.frame, self.BLOCKx, self.BLOCKy)
 
-    def spawnEnemy(self):
-        self.terrain.spawnEnemy()
+    def spawn_enemy(self):
+        self.terrain.spawn_enemy()
         self.enemies = self.terrain.enemies
         for enemy in self.enemies:
             enemy.updateTile(self.frame)
@@ -128,34 +126,34 @@ class Maze:
         if self.player.active:
             if self.player.move(3):
                 self.left()
-                self.playerUpdate()
-                self.enemyUpdate()
-                if self.terrain.detectCollision():
+                self.player_update()
+                self.enemy_update()
+                if self.terrain.detect_collision():
                     print("Dead")
 
     def rightKey(self, event):
         if self.player.active:
             if self.player.move(1):
                 self.right()
-                self.playerUpdate()
-                self.enemyUpdate()
-                if self.terrain.detectCollision():
+                self.player_update()
+                self.enemy_update()
+                if self.terrain.detect_collision():
                     print("Dead")
 
     def upKey(self, event):
         if self.player.active:
             if self.player.move(0):
                 self.up()
-                self.playerUpdate()
-                self.enemyUpdate()
-                if self.terrain.detectCollision():
+                self.player_update()
+                self.enemy_update()
+                if self.terrain.detect_collision():
                     print("Dead")
 
     def downKey(self, event):
         if self.player.active:
             if self.player.move(2):
                 self.down()
-                self.playerUpdate()
-                self.enemyUpdate()
-                if self.terrain.detectCollision():
+                self.player_update()
+                self.enemy_update()
+                if self.terrain.detect_collision():
                     print("Dead")
