@@ -33,7 +33,7 @@ class Tutorial:
         info.popUpFrame.create_image(0, 0, image=self.bmImage, anchor=NW)
 
         for i in range(10):
-            bm.terrain.placeMoney()
+            bm.terrain.place_money()
 
         bm.display(next=0)
         self.moneyTracker = copy.deepcopy(bm.player.debt)
@@ -62,7 +62,7 @@ class Tutorial:
 
         w.terrain.land[0][9].holding = "phase"
 
-        w.terrain.checkBarriers()
+        w.terrain.check_barriers()
         w.player.loc = w.terrain.land[0][0]
         w.player.loc.start = True
         w.player.debt = self.moneyTracker
@@ -94,7 +94,7 @@ class Tutorial:
 
     def enemies(self):
         em = maze.Maze(self.parent, self.blank())
-        em.spawnEnemy()
+        em.spawn_enemy()
         for enemy in em.terrain.enemies:
             enemy.loc = em.terrain.land[3][5]
             enemy.X = enemy.loc.X
@@ -114,7 +114,7 @@ class Tutorial:
         # horizontal lines
         em.terrain.land[4][5].borders[0] = True
 
-        em.terrain.checkBarriers()
+        em.terrain.check_barriers()
 
         info = popup.PopUp(self.parent)
         info.popUpFrame.create_image(0, 0, image=self.eImage, anchor=NW)
@@ -131,8 +131,8 @@ class Tutorial:
         ts.player.debt = self.moneyTracker
         ts.terrain.land[4][0].target = True
 
-        ts.spawnEnemy()
-        ts.spawnEnemy()
+        ts.spawn_enemy()
+        ts.spawn_enemy()
         ts.terrain.enemies[0].loc = ts.terrain.land[3][0]
         ts.terrain.enemies[0].X = ts.terrain.enemies[0].loc.X
         ts.terrain.enemies[0].Y = ts.terrain.enemies[0].loc.Y

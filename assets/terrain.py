@@ -29,7 +29,7 @@ class Terrain:
         self.land = [[tile.Tile() for j in range(cols)] for i in range(rows)]
 
         # connect tiles in a dictionary
-        self.connectDictionary()
+        self.connect_dictionary()
 
         self.corners = [self.land[0][0],
                         self.land[0][self.cols-1],
@@ -39,11 +39,11 @@ class Terrain:
         # should there be barriers?
         if "barriers" in kwargs:
             if kwargs["barriers"]:
-                self.setBarriers(0, self.rows, 0, self.cols)
+                self.set_barriers(0, self.rows, 0, self.cols)
         else:
-            self.setBarriers(0, self.rows, 0, self.cols)
+            self.set_barriers(0, self.rows, 0, self.cols)
 
-    def setCorners(self):
+    def set_corners(self):
         # corners of the map
         self.corners.clear()
         self.corners = [self.land[0][0],
@@ -51,7 +51,7 @@ class Terrain:
                         self.land[self.rows-1][self.cols-1],
                         self.land[self.rows-1][0]]
 
-    def closestCorner(self):
+    def closest_corner(self):
         minimum = math.sqrt((self.player.loc.X - self.corners[0].X) ** 2 + (self.player.loc.Y - self.corners[0].Y) ** 2)
         result = 0
         for i in range(len(self.corners)):
@@ -60,10 +60,10 @@ class Terrain:
                 result = i
         return result
 
-    def nextMap(self, player, enemies):
+    def next_map(self, player, enemies):
         return Terrain(int(self.rows*1.2), int(self.cols*1.2), player, enemies)
 
-    def randomPath(self):
+    def random_path(self):
         # place start and exit
         startx = 0
         starty = 0
@@ -75,7 +75,7 @@ class Terrain:
             targetx = random.randint(0, self.rows - 1)
             targety = random.randint(0, self.cols - 1)
         self.land[startx][starty].start = True
-        self.land[startx][starty].visisted = True
+        self.land[startx][starty].visited = True
         self.start = self.land[startx][starty]
         self.land[targetx][targety].target = True
         self.exit = self.land[targetx][targety]
@@ -83,7 +83,7 @@ class Terrain:
         # place starting player
         self.player.loc = self.land[startx][starty]
 
-    def connectDictionary(self):
+    def connect_dictionary(self):
         # connect the dictionary
         for i in range(self.rows):
             for j in range(self.cols):
@@ -98,7 +98,7 @@ class Terrain:
                 if j < self.cols-1:
                     self.land[i][j].connections[1] = self.land[i][j+1]
 
-    def setBarriers(self, sr, er, sc, ec):
+    def set_barriers(self, sr, er, sc, ec):
         # set barriers
         i = sr
         while i < er:
@@ -117,7 +117,7 @@ class Terrain:
                 j += 1
             i += 1
 
-    def checkBarriers(self):
+    def check_barriers(self):
         for i in range(self.rows):
             for j in range(self.cols):
                 if self.land[i][j].borders[0] and self.land[i][j].connections[0] is not None:
@@ -129,24 +129,24 @@ class Terrain:
                 if self.land[i][j].borders[3] and self.land[i][j].connections[3] is not None:
                     self.land[i][j].connections[3].borders[1] = True
 
-    def placeTarget(self, frame):
+    def place_target(self, frame):
         diagonal = math.sqrt((self.rows**2) + (self.cols**2))
         self.exit.target = False
-        self.exit.resetTile(frame)
+        self.exit.reset_tile(frame)
 
-        possible = self.randomSpot(0, self.rows, 0, self.cols)
+        possible = self.random_spot(0, self.rows, 0, self.cols)
         targetx = possible.Y
         targety = possible.X
 
         while math.sqrt(((self.player.Y - targetx) ** 2) + (self.player.X - targety) ** 2) < diagonal/4 \
                 or self.land[targetx][targety].visited or self.land[targetx][targety].evisited:
-                possible = self.randomSpot(0, self.rows, 0, self.cols)
+                possible = self.random_spot(0, self.rows, 0, self.cols)
                 targetx = possible.Y
                 targety = possible.X
         self.exit = possible
         self.exit.target = True
 
-    def checkStartExit(self):
+    def check_start_exit(self):
         # good start
         valids = []
         for i in range(4):
@@ -167,24 +167,24 @@ class Terrain:
         for direction in valids:
             self.exit.connections[direction].borders[(direction+2) % 4] = False
 
-    def randomizePickups(self):
+    def randomize_pickups(self):
         for i in range(int((self.rows*self.cols)/70)):
-            self.randomSpot(0, self.rows, 0, self.cols).holding = "phase"
+            self.random_spot(0, self.rows, 0, self.cols).holding = "phase"
 
-    def placeMoney(self):
-        self.randomSpot(0, self.rows, 0, self.cols).holding = "money"
+    def place_money(self):
+        self.random_spot(0, self.rows, 0, self.cols).holding = "money"
 
-    def randomEnemies(self):
+    def random_enemies(self):
         # place start and exit
         for baddy in self.enemies:
-            baddy.loc = self.randomSpot(0, self.rows, 0, self.cols)
+            baddy.loc = self.random_spot(0, self.rows, 0, self.cols)
 
-    def spawnEnemy(self):
+    def spawn_enemy(self):
         new = enemy.Enemy()
-        new.loc = self.randomSpot(0, self.rows, 0, self.cols)
+        new.loc = self.random_spot(0, self.rows, 0, self.cols)
         self.enemies.append(new)
 
-    def randomSpot(self, sr, er, sc, ec):
+    def random_spot(self, sr, er, sc, ec):
         rollx = random.randint(sc, ec-1)
         rolly = random.randint(sr, er-1)
         while self.land[rolly][rollx].visited \
@@ -195,7 +195,7 @@ class Terrain:
             rolly = random.randint(sr, er-1)
         return self.land[rolly][rollx]
 
-    def textPrint(self):
+    def text_print(self):
         for row in self.land:
             for col in row:
                 if col.start:
@@ -212,15 +212,15 @@ class Terrain:
                     print("[ ]", end=" ")
             print()
 
-    def createImage(self, frame, BLOCKx, BLOCKy):
+    def create_image(self, frame, BLOCKx, BLOCKy):
         # draw maze
         for row in self.land:
             for col in row:
                 # draw tiles
-                col.createImage(frame, BLOCKx, BLOCKy)
-        self.player.createImage(frame, BLOCKx, BLOCKy)
+                col.create_image(frame, BLOCKx, BLOCKy)
+        self.player.create_image(frame, BLOCKx, BLOCKy)
         for baddy in self.enemies:
-            baddy.createImage(frame, BLOCKx, BLOCKy)
+            baddy.create_image(frame, BLOCKx, BLOCKy)
 
     def redraw(self, frame, BLOCKx, BLOCKy):
         # draw maze
@@ -232,18 +232,18 @@ class Terrain:
         for baddy in self.enemies:
             baddy.redraw(frame, BLOCKx, BLOCKy)
 
-    def detectCollision(self):
+    def detect_collision(self):
         for baddy in self.enemies:
             if baddy.loc == self.player.loc:
                 return True
         return False
 
-    def expandMap(self, x):
+    def expand_map(self, x):
         oldr = self.rows
         oldc = self.cols
         self.rows += x
         self.cols += x
-        direction = self.closestCorner()
+        direction = self.closest_corner()
         if direction == 0:
             self.shiftNW(x)
         elif direction == 1:
@@ -252,7 +252,7 @@ class Terrain:
             self.shiftSE(oldr, oldc, x)
         else:
             self.shiftSW(oldr, x)
-        self.setCorners()
+        self.set_corners()
 
     def shiftNW(self, x):
         # redraw bounds of maze
@@ -266,7 +266,7 @@ class Terrain:
                 for j in range(x):
                     self.land[i].insert(0, tile.Tile())
 
-        self.connectDictionary()
+        self.connect_dictionary()
         self.player.X = self.player.loc.X
         self.player.Y = self.player.loc.Y
 
@@ -274,13 +274,13 @@ class Terrain:
             baddy.X = baddy.loc.X
             baddy.Y = baddy.loc.Y
 
-        self.setBarriers(0, x, 0, self.cols)
-        self.setBarriers(x, self.rows, 0, x)
+        self.set_barriers(0, x, 0, self.cols)
+        self.set_barriers(x, self.rows, 0, x)
 
-        self.checkBarriers()
+        self.check_barriers()
 
-        self.randomSpot(0, x, 0, self.cols).holding = "phase"
-        self.randomSpot(0, self.rows, 0, x).holding = "phase"
+        self.random_spot(0, x, 0, self.cols).holding = "phase"
+        self.random_spot(0, self.rows, 0, x).holding = "phase"
 
     def shiftNE(self, oldc, x):
         # redraw bounds of maze
@@ -294,7 +294,7 @@ class Terrain:
                 for j in range(x):
                     self.land[i].append(tile.Tile())
 
-        self.connectDictionary()
+        self.connect_dictionary()
         self.player.X = self.player.loc.X
         self.player.Y = self.player.loc.Y
 
@@ -302,13 +302,13 @@ class Terrain:
             baddy.X = baddy.loc.X
             baddy.Y = baddy.loc.Y
 
-        self.setBarriers(0, x, 0, self.cols)
-        self.setBarriers(x, self.rows, oldc, self.cols)
+        self.set_barriers(0, x, 0, self.cols)
+        self.set_barriers(x, self.rows, oldc, self.cols)
 
-        self.checkBarriers()
+        self.check_barriers()
 
-        self.randomSpot(0, x, 0, self.cols).holding = "phase"
-        self.randomSpot(x, self.rows, oldc, self.cols).holding = "phase"
+        self.random_spot(0, x, 0, self.cols).holding = "phase"
+        self.random_spot(x, self.rows, oldc, self.cols).holding = "phase"
 
     def shiftSW(self, oldr, x):
         for row in self.land:
@@ -318,7 +318,7 @@ class Terrain:
             self.land.append([tile.Tile() for j in range(self.cols)])
 
         # connect the dictionary
-        self.connectDictionary()
+        self.connect_dictionary()
         self.player.X = self.player.loc.X
         self.player.Y = self.player.loc.Y
 
@@ -327,13 +327,13 @@ class Terrain:
             baddy.Y = baddy.loc.Y
 
         # set barriers
-        self.setBarriers(0, oldr, 0, x)
-        self.setBarriers(oldr, self.rows, 0, self.cols)
+        self.set_barriers(0, oldr, 0, x)
+        self.set_barriers(oldr, self.rows, 0, self.cols)
 
-        self.checkBarriers()
+        self.check_barriers()
 
-        self.randomSpot(0, oldr, 0, x).holding = "phase"
-        self.randomSpot(oldr, self.rows, 0, self.cols).holding = "phase"
+        self.random_spot(0, oldr, 0, x).holding = "phase"
+        self.random_spot(oldr, self.rows, 0, self.cols).holding = "phase"
 
     def shiftSE(self, oldr, oldc, x):
         # redraw bounds of maze
@@ -341,22 +341,22 @@ class Terrain:
             for i in range(x):
                 row.append(tile.Tile())
         for i in range(x):
-            self.land.append([tile.Title() for j in range(self.cols)])
+            self.land.append([tile.Tile() for j in range(self.cols)])
         # connect the dictionary
-        self.connectDictionary()
+        self.connect_dictionary()
 
         for baddy in self.enemies:
             baddy.X = baddy.loc.X
             baddy.Y = baddy.loc.Y
 
         # set barriers
-        self.setBarriers(0, oldr, oldc, self.cols)
-        self.setBarriers(oldr, self.rows, 0, self.cols)
+        self.set_barriers(0, oldr, oldc, self.cols)
+        self.set_barriers(oldr, self.rows, 0, self.cols)
 
-        self.checkBarriers()
+        self.check_barriers()
 
-        self.randomSpot(0, oldr, oldc, self.cols).holding = "phase"
-        self.randomSpot(oldr, self.rows, 0, self.cols).holding = "phase"
+        self.random_spot(0, oldr, oldc, self.cols).holding = "phase"
+        self.random_spot(oldr, self.rows, 0, self.cols).holding = "phase"
 
     def insertEnemies(self, enemies):
         self.enemies = enemies

@@ -1,11 +1,9 @@
 import sys
-from tkinter import PhotoImage, Checkbutton
-from tkinter import LEFT, NW, Canvas
+from tkinter import PhotoImage, Checkbutton, LEFT, NW, Canvas
 from buttons.buttons import MenuButton
 
 from assets import terrain, maze, player
-from menus import tutorial
-from menus import popup
+from menus import tutorial, popup
 
 
 # start screen buttons
@@ -16,12 +14,11 @@ class StartButton(MenuButton):
         self.startScreen = start_screen
 
     def behavior(self):
-        self.parent.destroy()
         play_area = maze.Maze(
             self.parent,
             terrain.Terrain(10, 20, player.Player(), [], barriers=True), path="random"
         )
-        play_area.terrain.spawnEnemy()
+        play_area.terrain.spawn_enemy()
         play_area.display(next="expand")
         self.startScreen.rebuild()
 
@@ -47,31 +44,31 @@ class OptionsButton(MenuButton):
         options_screen = popup.PopUp(self.parent)
         options_screen.popUpFrame.configure(bg="#F0F0F0")
         Checkbutton(options_screen.popUpFrame, text="Do not automatically purchase more\n"
-                                                   "gems from the store if you do not \n"
-                                                   "have enough to complete purchase.", justify=LEFT).place(relx=.1, rely=.2)
+                                                    "gems from the store if you do not \n"
+                                                    "have enough to complete purchase.", justify=LEFT).place(relx=.1, rely=.2)
         Checkbutton(options_screen.popUpFrame, text="Do not sell my account details.", justify=LEFT).place(relx=.1, rely=.3)
         Checkbutton(options_screen.popUpFrame, text="Do not automatically add suggested\n"
-                                                   "purchases to my cart.", justify=LEFT).place(relx=.1, rely=.4)
+                                                    "purchases to my cart.", justify=LEFT).place(relx=.1, rely=.4)
         Checkbutton(options_screen.popUpFrame, text="Sign me up for warranty protection\n"
-                                                   "with every purchase.", justify=LEFT).place(relx=.1, rely=.5)
+                                                    "with every purchase.", justify=LEFT).place(relx=.1, rely=.5)
         Checkbutton(options_screen.popUpFrame, text="Don't subscribe me to Super Fun Mazes,\n"
-                                                   "a $9.99 monthly periodical.", justify=LEFT).place(relx=.1, rely=.6)
+                                                    "a $9.99 monthly periodical.", justify=LEFT).place(relx=.1, rely=.6)
         Checkbutton(options_screen.popUpFrame, text="Email all of my email contacts\n"
-                                                   "with the subject line: URGENT!\n"
-                                                   "directing them to download this game.", justify=LEFT).place(relx=.1, rely=.7)
+                                                    "with the subject line: URGENT!\n"
+                                                    "directing them to download this game.", justify=LEFT).place(relx=.1, rely=.7)
         Checkbutton(options_screen.popUpFrame, text="Store my credit card details\n"
-                                                   "as plain text.", justify=LEFT).place(relx=.6, rely=.2)
+                                                    "as plain text.", justify=LEFT).place(relx=.6, rely=.2)
         Checkbutton(options_screen.popUpFrame, text="Give me the option to rate this game\n"
-                                                   "something other than 'five stars'.", justify=LEFT).place(relx=.6,
+                                                    "something other than 'five stars'.", justify=LEFT).place(relx=.6,
                                                                                                             rely=.3)
         Checkbutton(options_screen.popUpFrame, text="Restore default settings when leaving\n"
-                                                   "this menu?", justify=LEFT).place(relx=.6, rely=.4)
+                                                    "this menu?", justify=LEFT).place(relx=.6, rely=.4)
         Checkbutton(options_screen.popUpFrame, text="Pay the full price, rather than the\n"
-                                                   "listed sale price in the store.", justify=LEFT).place(relx=.6, rely=.5)
+                                                    "listed sale price in the store.", justify=LEFT).place(relx=.6, rely=.5)
         Checkbutton(options_screen.popUpFrame, text="Do not automatically reinstall after\n"
-                                                   "being deleted.", justify=LEFT).place(relx=.6, rely=.6)
+                                                    "being deleted.", justify=LEFT).place(relx=.6, rely=.6)
         Checkbutton(options_screen.popUpFrame, text="Do not prompt me with conformation\n"
-                                                   "when making a purchase.", justify=LEFT).place(relx=.6, rely=.7)
+                                                    "when making a purchase.", justify=LEFT).place(relx=.6, rely=.7)
 
 
 class ExitButton(MenuButton):

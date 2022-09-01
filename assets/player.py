@@ -87,7 +87,7 @@ class Player:
             return True
         return False
 
-    def createImage(self, frame, BLOCKx, BLOCKy):
+    def create_image(self, frame, BLOCKx, BLOCKy):
         self.X = self.loc.X
         self.Y = self.loc.Y
         self.loc.visited = True
@@ -120,3 +120,4 @@ class Player:
         if self.loc.phaseImage:
             frame.delete(self.loc.phaseImage)
             self.loc.holding = None
+
